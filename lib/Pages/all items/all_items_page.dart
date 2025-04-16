@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:flutter_application_1/Pages/item_details_page.dart';
-import 'package:flutter_application_1/Pages/catagories/Tops/tops.dart';
-import 'package:flutter_application_1/Pages/catagories/Bottoms/bottoms.dart';
-import 'package:flutter_application_1/Pages/catagories/Accessories/accessories.dart';
-import 'package:flutter_application_1/Pages/catagories/Shoes/shoes.dart';
+import 'package:flutter_application_1/Pages/all%20items/catagories/Tops/tops.dart';
+import 'package:flutter_application_1/Pages/all%20items/catagories/Bottoms/bottoms.dart';
+import 'package:flutter_application_1/Pages/all%20items/catagories/Accessories/accessories.dart';
+import 'package:flutter_application_1/Pages/all%20items/catagories/Shoes/shoes.dart';
 
 class AllItemsPage extends StatefulWidget {
   final List<File> items;
@@ -75,15 +75,15 @@ class _AllItemsPageState extends State<AllItemsPage> {
               const SizedBox(height: 16),
 
               // Bottoms Section
-              _buildCategorySection('Bottoms', widget.bottoms, BottomsPage(bottoms: widget.bottoms)),
+              _buildCategorySection('Bottoms', widget.bottoms, BottomsPage(bottoms: widget.bottoms, jeans: [], shorts: [], joggers: [],)),
               const SizedBox(height: 16),
 
               // Accessories Section
-              _buildCategorySection('Accessories', widget.accessories, AccessoriesPage(accessories: widget.accessories)),
+              _buildCategorySection('Accessories', widget.accessories, AccessoriesPage(accessories: widget.accessories, bracelets: [], handBags: [], rings: [], necklaces: [],)),
               const SizedBox(height: 16),
 
               // Shoes Section
-              _buildCategorySection('Shoes', widget.shoes, ShoesPage(shoes: widget.shoes)),
+              _buildCategorySection('Shoes', widget.shoes, ShoesPage(shoes: widget.shoes, sneakers: [], sandals: [], highKneels: [],)),
             ],
           ),
         ),

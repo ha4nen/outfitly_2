@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-class AccessoriesPage extends StatefulWidget {
-  final List<File> bracelets;
-  final List<File> handBags;
-  final List<File> rings;
-  final List<File> necklaces;
+import 'Catagories/Summer.dart';
+import 'Catagories/Winter.dart';
+import 'Catagories/Fall.dart';
+import 'Catagories/Spring.dart';
 
-  const AccessoriesPage({
+class AllOutfitsPage extends StatefulWidget {
+  final List<File> summerOutfits;
+  final List<File> winterOutfits;
+  final List<File> fallOutfits;
+  final List<File> springOutfits;
+
+  const AllOutfitsPage({
     super.key,
-    required this.bracelets,
-    required this.handBags,
-    required this.rings,
-    required this.necklaces, required List<File> accessories,
+    required this.summerOutfits,
+    required this.winterOutfits,
+    required this.fallOutfits,
+    required this.springOutfits, required List<File> outfits,
   });
 
   @override
-  State<AccessoriesPage> createState() => _AccessoriesPageState();
+  State<AllOutfitsPage> createState() => _AllOutfitsPageState();
 }
 
-class _AccessoriesPageState extends State<AccessoriesPage> {
+class _AllOutfitsPageState extends State<AllOutfitsPage> {
   final Map<String, bool> _isEditingMap = {}; // Tracks editing state for each category
   final Set<int> _selectedItems = {}; // Tracks selected items for deletion
   bool _isUniversalEditing = false; // Tracks universal edit mode
@@ -58,7 +63,7 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
           },
         ),
         title: const Text(
-          'Accessories',
+          'All Outfits',
           style: TextStyle(color: Colors.white), // Set text color to white
         ),
         backgroundColor: Colors.black, // Set background color to black
@@ -90,20 +95,20 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Bracelets Section
-              _buildCategorySection('Bracelets', widget.bracelets),
+              // Summer Section
+              _buildCategorySection('Summer', widget.summerOutfits, SummerOutfitsPage(outfits: widget.summerOutfits)),
               const SizedBox(height: 16),
 
-              // HandBags Section
-              _buildCategorySection('HandBags', widget.handBags),
+              // Winter Section
+              _buildCategorySection('Winter', widget.winterOutfits, WinterOutfitsPage(outfits: widget.winterOutfits)),
               const SizedBox(height: 16),
 
-              // Rings Section
-              _buildCategorySection('Rings', widget.rings),
+              // Fall Section
+              _buildCategorySection('Fall', widget.fallOutfits, FallOutfitsPage(outfits: widget.fallOutfits)),
               const SizedBox(height: 16),
 
-              // Necklaces Section
-              _buildCategorySection('Necklaces', widget.necklaces),
+              // Spring Section
+              _buildCategorySection('Spring', widget.springOutfits, SpringOutfitsPage(outfits: widget.springOutfits)),
             ],
           ),
         ),
@@ -111,7 +116,7 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
     );
   }
 
-  Widget _buildCategorySection(String categoryName, List<File> items) {
+  Widget _buildCategorySection(String categoryName, List<File> items, Widget destinationPage) {
     final isEditing = _isUniversalEditing || (_isEditingMap[categoryName] ?? false);
 
     return Column(
@@ -120,9 +125,17 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              categoryName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => destinationPage),
+                );
+              },
+              child: Text(
+                categoryName,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+              ),
             ),
             Container(
               decoration: BoxDecoration(
@@ -144,7 +157,7 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
                 height: 150,
                 color: Colors.grey[200], // Placeholder for items
                 child: const Center(
-                  child: Text('No items to display'),
+                  child: Text('No outfits to display'),
                 ),
               )
             : SizedBox(

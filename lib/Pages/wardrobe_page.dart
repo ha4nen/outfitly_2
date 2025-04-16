@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/all%20items/all_items_page.dart';
-import 'package:flutter_application_1/Pages/all_outfits.dart';
+import 'package:flutter_application_1/Pages/Outfits/all_outfits.dart';
 import 'dart:io';
 import 'item_details_page.dart';
 
@@ -72,12 +72,16 @@ class _WardrobePageState extends State<WardrobePage> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.black, // Background color set to black
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
                       'Items',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Text color set to white
+                      ),
                     ),
                   ),
                 ),
@@ -170,19 +174,29 @@ class _WardrobePageState extends State<WardrobePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AllOutfitsPage(outfits: widget.items), // Pass the outfits list
+                        builder: (context) => AllOutfitsPage(
+                          outfits: widget.items,
+                          summerOutfits: [],
+                          winterOutfits: [],
+                          fallOutfits: [],
+                          springOutfits: [],
+                        ),
                       ),
                     );
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.black, // Background color set to black
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
                       'Outfits',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Text color set to white
+                      ),
                     ),
                   ),
                 ),

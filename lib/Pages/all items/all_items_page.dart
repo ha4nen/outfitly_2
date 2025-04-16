@@ -30,21 +30,30 @@ class AllItemsPage extends StatefulWidget {
 }
 
 class _AllItemsPageState extends State<AllItemsPage> {
-  bool _isEditing = false; // Tracks whether the user is in edit mode
+  final Map<String, bool> _isEditingMap = {}; // Tracks editing state for each category
   final Set<int> _selectedItems = {}; // Tracks selected items for deletion
+  bool _isUniversalEditing = false; // Tracks universal edit mode
 
-  void _toggleEditMode() {
+  void _toggleEditMode(String categoryName) {
     setState(() {
-      _isEditing = !_isEditing;
+      _isEditingMap[categoryName] = !(_isEditingMap[categoryName] ?? false);
       _selectedItems.clear(); // Clear selections when toggling modes
     });
   }
 
-  void _deleteSelectedItems() {
+  void _toggleUniversalEditMode() {
     setState(() {
-      widget.items.removeWhere((file) => _selectedItems.contains(widget.items.indexOf(file)));
+      _isUniversalEditing = !_isUniversalEditing;
+      _isEditingMap.clear(); // Clear individual edit states
+      _selectedItems.clear(); // Clear selections
+    });
+  }
+
+  void _deleteSelectedItems(String categoryName, List<File> items) {
+    setState(() {
+      items.removeWhere((file) => _selectedItems.contains(items.indexOf(file)));
       _selectedItems.clear();
-      _isEditing = false; // Exit edit mode after deletion
+      _isEditingMap[categoryName] = false; // Exit edit mode after deletion
     });
   }
 
@@ -52,15 +61,36 @@ class _AllItemsPageState extends State<AllItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Back button color set to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back
+          },
+        ),
         title: const Text(
           'All Items',
           style: TextStyle(color: Colors.white), // Set text color to white
         ),
         backgroundColor: Colors.black, // Set background color to black
         actions: [
-          IconButton(
-            icon: Icon(_isEditing ? Icons.delete : Icons.edit), // Pencil or Bin icon
-            onPressed: _isEditing ? _deleteSelectedItems : _toggleEditMode,
+          Container(
+            margin: const EdgeInsets.only(right: 8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: SizedBox(
+              width: 36, // Adjusted width
+              height: 36, // Adjusted height
+              child: IconButton(
+                icon: Icon(
+                  _isUniversalEditing ? Icons.delete : Icons.edit,
+                  color: Colors.black,
+                  size: 20, // Adjusted icon size
+                ),
+                onPressed: _toggleUniversalEditMode,
+              ),
+            ),
           ),
         ],
       ),
@@ -71,19 +101,56 @@ class _AllItemsPageState extends State<AllItemsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Tops Section
-              _buildCategorySection('Tops', widget.tops, TopsPage(tops: widget.tops, tShirts: [], shirts: [], longSleeves: [],)),
+              _buildCategorySection(
+                'Tops',
+                widget.tops,
+                TopsPage(
+                  tops: widget.tops,
+                  tShirts: [],
+                  shirts: [],
+                  longSleeves: [],
+                ),
+              ),
               const SizedBox(height: 16),
 
               // Bottoms Section
-              _buildCategorySection('Bottoms', widget.bottoms, BottomsPage(bottoms: widget.bottoms, jeans: [], shorts: [], joggers: [],)),
+              _buildCategorySection(
+                'Bottoms',
+                widget.bottoms,
+                BottomsPage(
+                  bottoms: widget.bottoms,
+                  jeans: [],
+                  shorts: [],
+                  joggers: [],
+                ),
+              ),
               const SizedBox(height: 16),
 
               // Accessories Section
-              _buildCategorySection('Accessories', widget.accessories, AccessoriesPage(accessories: widget.accessories, bracelets: [], handBags: [], rings: [], necklaces: [],)),
+              _buildCategorySection(
+                'Accessories',
+                widget.accessories,
+                AccessoriesPage(
+                  accessories: widget.accessories,
+                  bracelets: [],
+                  handBags: [],
+                  rings: [],
+                  necklaces: [],
+                ),
+              ),
               const SizedBox(height: 16),
 
               // Shoes Section
-              _buildCategorySection('Shoes', widget.shoes, ShoesPage(shoes: widget.shoes, sneakers: [], sandals: [], highKneels: [],)),
+              _buildCategorySection(
+                'Shoes',
+                widget.shoes,
+                ShoesPage(
+                  shoes: widget.shoes,
+                  sneakers: [],
+                  sandals: [],
+                  highKneels: [],
+                ),
+              ),
             ],
           ),
         ),
@@ -92,6 +159,8 @@ class _AllItemsPageState extends State<AllItemsPage> {
   }
 
   Widget _buildCategorySection(String categoryName, List<File> items, Widget destinationPage) {
+    final isEditing = _isUniversalEditing || (_isEditingMap[categoryName] ?? false);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -111,9 +180,17 @@ class _AllItemsPageState extends State<AllItemsPage> {
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
               ),
             ),
-            IconButton(
-              icon: Icon(_isEditing ? Icons.delete : Icons.edit),
-              onPressed: _isEditing ? _deleteSelectedItems : _toggleEditMode,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: IconButton(
+                icon: Icon(isEditing ? Icons.delete : Icons.edit),
+                onPressed: isEditing
+                    ? () => _deleteSelectedItems(categoryName, items)
+                    : () => _toggleEditMode(categoryName),
+              ),
             ),
           ],
         ),
@@ -121,7 +198,7 @@ class _AllItemsPageState extends State<AllItemsPage> {
         items.isEmpty
             ? Container(
                 height: 150,
-                color: Colors.grey[200], // Placeholder for items
+                color: const Color.fromARGB(255, 255, 255, 255), // Placeholder for items
                 child: const Center(
                   child: Text('No items to display'),
                 ),
@@ -134,7 +211,7 @@ class _AllItemsPageState extends State<AllItemsPage> {
                   itemBuilder: (context, index) {
                     final isSelected = _selectedItems.contains(index);
                     return GestureDetector(
-                      onTap: _isEditing
+                      onTap: isEditing
                           ? () {
                               setState(() {
                                 if (isSelected) {

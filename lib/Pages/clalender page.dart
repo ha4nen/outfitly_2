@@ -13,115 +13,246 @@ class _FeedPageState extends State<FeedPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  bool _dayTapped = false;
 
-  // Example events
-  final Map<DateTime, List<String>> _events = {
-  };
+  final Map<DateTime, List<String>> _events = {};
 
   List<String> _getEventsForDay(DateTime day) {
     return _events[DateTime.utc(day.year, day.month, day.day)] ?? [];
   }
 
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _calendarFormat = CalendarFormat.week;
+      _dayTapped = true;
+    });
+  }
+
+  void _toggleCalendarFormat() {
+    setState(() {
+      _calendarFormat = CalendarFormat.month;
+      _dayTapped = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final events = _getEventsForDay(_selectedDay ?? _focusedDay);
+
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text(
-          'Calendar',
-          style: TextStyle(color: Colors.white), // Set text color to white
-        ),
-        backgroundColor: Colors.black, // Set background color to black
+        title: const Text('Plan Your Look', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
       ),
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2000, 1, 1),
-            lastDay: DateTime.utc(2100, 12, 31),
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
-            calendarStyle: const CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.yellow,
-                shape: BoxShape.circle,
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TableCalendar(
+              firstDay: DateTime.utc(2000, 1, 1),
+              lastDay: DateTime.utc(2100, 12, 31),
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              calendarFormat: _calendarFormat,
+              onDaySelected: _onDaySelected,
+              onPageChanged: (focusedDay) {
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+              },
+              availableCalendarFormats: const {
+                CalendarFormat.month: '',
+                CalendarFormat.week: '',
+              },
+              headerStyle: HeaderStyle(
+                titleCentered: true,
+                formatButtonVisible: false,
+                leftChevronVisible: true,
+                rightChevronVisible: true,
+                titleTextStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                titleTextFormatter: (date, locale) {
+                  return '${_monthName(date.month)} ${date.year}';
+                },
               ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
+              calendarStyle: const CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Colors.yellow,
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+                outsideDaysVisible: false,
               ),
-              outsideDaysVisible: false,
-            ),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: true,
-              titleCentered: true,
             ),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: _buildEventList(),
+
+          // Button to switch back to month view
+          if (_calendarFormat == CalendarFormat.week)
+            TextButton(
+              onPressed: _toggleCalendarFormat,
+              child: const Text('Show Full Month'),
+            ),
+
+          // Expand section when a date is selected
+          AnimatedCrossFade(
+            crossFadeState: _dayTapped
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 400),
+            firstChild: const SizedBox.shrink(),
+            secondChild: Column(
+              children: [
+                _buildEventCard(events),
+                const SizedBox(height: 12),
+                _buildOutfitImagePlaceholder(),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildEventList() {
-    final events = _getEventsForDay(_selectedDay ?? _focusedDay);
-    if (events.isEmpty) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'No outfit for this day.',
-            style: TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MagicPage(
-                    onThemeChange: () {}, // Pass a dummy callback or your actual theme change function
-                    fromCalendar: true, // Indicate that this navigation is from the calendar
+  Widget _buildEventCard(List<String> events) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 14,
+              offset: Offset(0, 6),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Your Plans for the Day',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            if (events.isEmpty)
+              Column(
+                children: [
+                  const Text('No outfit planned.', style: TextStyle(fontSize: 16)),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.auto_awesome),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MagicPage(
+                                  onThemeChange: () {},
+                                  fromCalendar: true,
+                                ),
+                              ),
+                            );
+                          },
+                          label: const Text('Create Your Outfit'),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.checkroom, color: Colors.black),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: Colors.grey.shade300,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Choose Your Outfit selected')),
+                            );
+                          },
+                          label: const Text('Choose Outfit'),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              );
-            },
-            child: const Text('Create Your Outfit'),
-          ),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () {
-              // Add functionality for "Choose Your Outfit"
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Choose Your Outfit selected')),
-              );
-            },
-            child: const Text('Choose Your Outfit'),
-          ),
-        ],
-      );
-    }
-    return ListView.builder(
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(events[index]),
-          leading: const Icon(Icons.event),
-        );
-      },
+                ],
+              )
+            else
+              Column(
+                children: events.map((event) {
+                  return ListTile(
+                    leading: const Icon(Icons.event),
+                    title: Text(event),
+                  );
+                }).toList(),
+              )
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget _buildOutfitImagePlaceholder() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: AssetImage('assets/outfit_placeholder.png'), // Replace with actual asset
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: const Center(
+            child: Text(
+              'Your planned outfit will appear here',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                backgroundColor: Colors.black54,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _monthName(int month) {
+    const months = [
+      '', 'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[month];
   }
 }

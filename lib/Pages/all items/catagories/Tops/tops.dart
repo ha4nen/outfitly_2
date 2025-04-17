@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class TopsPage extends StatefulWidget {
-  final List<File> tops; // List of all tops items
-  final List<File> tShirts; // List of T-shirts
-  final List<File> shirts; // List of Shirts
-  final List<File> longSleeves; // List of LongSleeves
+  final Map<String, List<File>> categorizedTops;
 
   const TopsPage({
     super.key,
-    required this.tops,
-    required this.tShirts,
-    required this.shirts,
-    required this.longSleeves,
+    required this.categorizedTops,
   });
 
   @override
@@ -20,87 +14,114 @@ class TopsPage extends StatefulWidget {
 }
 
 class _TopsPageState extends State<TopsPage> {
-  final Map<String, bool> _isEditingMap = {}; // Tracks editing state for each category
-  final Set<int> _selectedItems = {}; // Tracks selected items for deletion
-  bool _isUniversalEditing = false; // Tracks universal edit mode
+  final Set<String> _sectionsMarkedForDelete = {};
+  bool _isDeleteMode = false;
 
-  void _toggleEditMode(String categoryName) {
-    setState(() {
-      _isEditingMap[categoryName] = !(_isEditingMap[categoryName] ?? false);
-      _selectedItems.clear(); // Clear selections when toggling modes
-    });
+  void _showAddCategoryDialog() {
+    String newCategory = '';
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add New Section"),
+          content: TextField(
+            decoration: const InputDecoration(hintText: "Section name"),
+            onChanged: (value) {
+              newCategory = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: const Text("Add"),
+              onPressed: () {
+                if (newCategory.isNotEmpty &&
+                    !widget.categorizedTops.containsKey(newCategory)) {
+                  setState(() {
+                    widget.categorizedTops[newCategory] = [];
+                  });
+                }
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  void _toggleUniversalEditMode() {
-    setState(() {
-      _isUniversalEditing = !_isUniversalEditing;
-      _isEditingMap.clear(); // Clear individual edit states
-      _selectedItems.clear(); // Clear selections
-    });
-  }
-
-  void _deleteSelectedItems(String categoryName, List<File> items) {
-    setState(() {
-      items.removeWhere((file) => _selectedItems.contains(items.indexOf(file)));
-      _selectedItems.clear();
-      _isEditingMap[categoryName] = false; // Exit edit mode after deletion
-    });
+  void _showDeleteConfirmation(String categoryName) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Deletion'),
+        content: Text('Are you sure you want to delete "$categoryName"?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: const Text('Delete'),
+            onPressed: () {
+              setState(() {
+                widget.categorizedTops.remove(categoryName);
+                _sectionsMarkedForDelete.remove(categoryName);
+              });
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
+        title: const Text('Tops', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white), // Back button color set to white
-          onPressed: () {
-            Navigator.pop(context); // Navigate back
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Tops',
-          style: TextStyle(color: Colors.white), // Set text color to white
-        ),
-        backgroundColor: Colors.black, // Set background color to black
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 8.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: IconButton(
-                icon: Icon(
-                  _isUniversalEditing ? Icons.delete : Icons.edit,
-                  color: Colors.black,
-                  size: 20,
-                ),
-                onPressed: _toggleUniversalEditMode,
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            onSelected: (value) {
+              if (value == 'delete') {
+                setState(() {
+                  _isDeleteMode = !_isDeleteMode;
+                });
+              } else if (value == 'customize') {
+                _showAddCategoryDialog();
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'delete',
+                child: Text(_isDeleteMode ? 'Cancel Delete Mode' : 'Delete Sections'),
               ),
-            ),
-          ),
+              const PopupMenuItem(
+                value: 'customize',
+                child: Text('Customize Your Tops'),
+              ),
+            ],
+          )
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // T-Shirts Section
-              _buildCategorySection('T-Shirts', widget.tShirts),
-              const SizedBox(height: 16),
-
-              // Shirts Section
-              _buildCategorySection('Shirts', widget.shirts),
-              const SizedBox(height: 16),
-
-              // LongSleeves Section
-              _buildCategorySection('LongSleeves', widget.longSleeves),
-            ],
+            children: widget.categorizedTops.entries.map((entry) {
+              return _buildCategorySection(entry.key, entry.value);
+            }).toList(),
           ),
         ),
       ),
@@ -108,8 +129,6 @@ class _TopsPageState extends State<TopsPage> {
   }
 
   Widget _buildCategorySection(String categoryName, List<File> items) {
-    final isEditing = _isUniversalEditing || (_isEditingMap[categoryName] ?? false);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,84 +137,55 @@ class _TopsPageState extends State<TopsPage> {
           children: [
             Text(
               categoryName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              child: IconButton(
-                icon: Icon(isEditing ? Icons.delete : Icons.edit),
-                onPressed: isEditing
-                    ? () => _deleteSelectedItems(categoryName, items)
-                    : () => _toggleEditMode(categoryName),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.blueAccent,
               ),
             ),
+            if (_isDeleteMode)
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                onPressed: () => _showDeleteConfirmation(categoryName),
+              ),
           ],
         ),
         const SizedBox(height: 8),
         items.isEmpty
             ? Container(
-                height: 150,
-                color: Colors.grey[200], // Placeholder for items
-                child: const Center(
-                  child: Text('No items to display'),
+                height: 100,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
                 ),
+                child: const Center(child: Text('No items to display')),
               )
-            : SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final isSelected = _selectedItems.contains(index);
-                    return GestureDetector(
-                      onTap: isEditing
-                          ? () {
-                              setState(() {
-                                if (isSelected) {
-                                  _selectedItems.remove(index);
-                                } else {
-                                  _selectedItems.add(index);
-                                }
-                              });
-                            }
-                          : () {
-                              // Handle item click (e.g., navigate to details page)
-                            },
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.file(
-                              items[index],
-                              fit: BoxFit.cover,
-                              width: 100,
-                              height: 100,
-                              color: isSelected
-                                  ? Colors.black.withOpacity(0.5)
-                                  : null,
-                              colorBlendMode: isSelected
-                                  ? BlendMode.darken
-                                  : null,
-                            ),
-                          ),
-                          if (isSelected)
-                            const Positioned(
-                              top: 0,
-                              right: 0,
-                              child: Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                            ),
-                        ],
+            : Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: items.map((file) {
+                  return Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: FileImage(file),
+                        fit: BoxFit.cover,
                       ),
-                    );
-                  },
-                ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        )
+                      ],
+                    ),
+                  );
+                }).toList(),
               ),
+        const SizedBox(height: 24),
       ],
     );
   }

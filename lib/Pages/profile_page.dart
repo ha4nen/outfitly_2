@@ -129,16 +129,74 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigate to the new page to view all items
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AllItemsPage(
-                            items: widget.items,
-                            tops: [],
-                            bottoms: [],
-                            accessories: [],
-                            shoes: [],
+                            categorizedTops: {
+                              'T-Shirts': [],
+                              'Shirts': [],
+                              'Blouses': [],
+                              'Tank Tops': [],
+                              'Sweaters': [],
+                              'Hoodies': [],
+                              'Cardigans': [],
+                              'Crop Tops': [],
+                              'Jackets': [],
+                              'Coats': [],
+                              'Vests': [],
+                              'Sportswear Tops': [],
+                            },
+                            categorizedBottoms: {
+                              'Jeans': [],
+                              'Trousers': [],
+                              'Leggings': [],
+                              'Shorts': [],
+                              'Skirts': [],
+                              'Modest Bottoms': [],
+                              'Culottes': [],
+                              'Joggers': [],
+                              'Sweatpants': [],
+                              'Formal Pants': [],
+                              'Overalls': [],
+                              'Capris': [],
+                            },
+                            categorizedAccessories: {
+                              'Hats': [],
+                              'Scarves': [],
+                              'Belts': [],
+                              'Bags': [],
+                              'Jewelry': [],
+                              'Earrings': [],
+                              'Necklaces': [],
+                              'Bracelets': [],
+                              'Rings': [],
+                              'Gloves': [],
+                              'Sunglasses': [],
+                              'Watches': [],
+                              'Hair Accessories': [],
+                              'Ties & Bowties': [],
+                              'Socks': [],
+                              'Hijabs & Covers': [],
+                              'Chiffon Hijabs': [],
+                              'Jersey Hijabs': [],
+                              'Undercaps': [],
+                              'Shawls': [],
+                              'Niqabs': [],
+                              'Khimars': [],
+                            },
+                            categorizedShoes: {
+                              'Sneakers': [],
+                              'Boots': [],
+                              'Flats': [],
+                              'Heels': [],
+                              'Sandals': [],
+                              'Flip-Flops': [],
+                              'Formal Shoes': [],
+                              'Slippers': [],
+                              'Sports Shoes': [],
+                              'Winter Shoes': [],
+                            },
                           ),
                         ),
                       );
@@ -146,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.black, // Background color set to black
+                        color: Colors.black,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
@@ -154,11 +212,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // Text color set to white
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
+
                   IconButton(
                     icon: Icon(_isEditing ? Icons.delete : Icons.edit),
                     onPressed: _isEditing ? _deleteSelectedItems : _toggleEditMode,

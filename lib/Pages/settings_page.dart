@@ -43,6 +43,19 @@ class SettingsPage extends StatelessWidget {
               onPressed: onThemeChange,
               child: const Text('Change Theme'),
             ),
+            const SizedBox(height: 16),
+
+            // Sign Out Button
+            ElevatedButton(
+              onPressed: () {
+                // Redirect to the login page
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red, // Set the button color to red
+              ),
+              child: const Text('Sign Out'),
+            ),
           ],
         ),
       ),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/main_app_page.dart';
-import 'dart:io';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

@@ -1,15 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/clalender%20page.dart';
-import 'package:flutter_application_1/Pages/magic_page.dart';
-import 'package:flutter_application_1/Pages/profile_page.dart';
-import 'package:flutter_application_1/Pages/feed_page.dart';
 import 'package:flutter_application_1/Pages/loading_page.dart';
 import 'package:flutter_application_1/Pages/login_page.dart';
 import 'package:flutter_application_1/Pages/register_page.dart';
 import 'package:flutter_application_1/Pages/main_app_page.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 void main() {

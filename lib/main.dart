@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => const LoadingPage(),
         '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
+        '/register': (context) =>  RegisterPage(),
         '/main': (context) => MainAppPage(items: _items, onThemeChange: _cycleTheme),
       },
     );

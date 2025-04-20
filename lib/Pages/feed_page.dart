@@ -26,7 +26,7 @@ class _WardrobePageState extends State<WardrobePage> {
   }
 
   // Add this for tracking the "like heart" animation per post
-  List<bool> _showHeart = List.generate(10, (_) => false);  // Assuming 10 posts for now
+  final List<bool> _showHeart = List.generate(10, (_) => false);  // Assuming 10 posts for now
 
   @override
   Widget build(BuildContext context) {

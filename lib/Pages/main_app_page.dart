@@ -31,7 +31,7 @@ class _MainAppPageState extends State<MainAppPage> {
   },
 ]),
     
-        MagicPage(onThemeChange: widget.onThemeChange),
+        MagicPage(onThemeChange: widget.onThemeChange, fromCalendar: false,),
       const FeedPage(),
       ProfilePage(items: widget.items, onThemeChange: widget.onThemeChange),
     ];

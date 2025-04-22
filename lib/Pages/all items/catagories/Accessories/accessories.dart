@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import '../../SubDetails.dart'; // Import SubDetails page
 
 class AccessoriesPage extends StatefulWidget {
   final Map<String, List<File>> categorizedAccessories;
@@ -126,23 +127,33 @@ class _AccessoriesPageState extends State<AccessoriesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              categoryName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.blueAccent,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubDetails(subcategoryName: categoryName),
               ),
-            ),
-            if (_isDeleteMode)
-              IconButton(
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
-                onPressed: () => _showDeleteConfirmation(categoryName),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                categoryName,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blueAccent,
+                ),
               ),
-          ],
+              if (_isDeleteMode)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  onPressed: () => _showDeleteConfirmation(categoryName),
+                ),
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         items.isEmpty

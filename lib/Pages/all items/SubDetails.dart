@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'itemDetails.dart'; // Import the ItemDetails page
+
+class SubDetails extends StatelessWidget {
+  final String subcategoryName;
+
+  const SubDetails({Key? key, required this.subcategoryName}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Example single item data
+    final String itemName = 'Example Item';
+    final String color = 'Red';
+    final String size = 'M';
+    final String season = 'Summer';
+    final List<String> tags = ['Casual', 'Cotton', 'Comfortable'];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(subcategoryName), // Display the subcategory name in the title
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: GestureDetector(
+            onTap: () {
+              // Navigate to ItemDetails page with example item data
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ItemDetails(
+                    itemName: itemName,
+                    color: color,
+                    size: size,
+                    season: season,
+                    tags: tags,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(12), // Soft rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  itemName,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

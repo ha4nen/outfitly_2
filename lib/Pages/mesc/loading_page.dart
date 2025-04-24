@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({super.key});
+  const LoadingPage({super.key, required File imageFile});
 
   @override
   State<LoadingPage> createState() => _LoadingPageState();
@@ -13,7 +15,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     // Simulate a delay before navigating to the login page
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       Navigator.pushReplacementNamed(context, '/login');
     });
   }

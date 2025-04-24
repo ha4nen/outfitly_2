@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'itemDetails.dart'; // Import the ItemDetails page
 
 class SubDetails extends StatelessWidget {
   final String subcategoryName;
 
-  const SubDetails({Key? key, required this.subcategoryName}) : super(key: key);
+  const SubDetails({super.key, required this.subcategoryName});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +31,11 @@ class SubDetails extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ItemDetails(
-                    itemName: itemName,
-                    color: color,
-                    size: size,
-                    season: season,
-                    tags: tags,
+                    itemName: itemName, // Pass the required itemName
+                    color: color,       // Pass the required color
+                    size: size,         // Pass the required size
+                    season: season,     // Pass the required season
+                    tags: tags, item: File('path/to/your/file'), // Pass a valid File object
                   ),
                 ),
               );

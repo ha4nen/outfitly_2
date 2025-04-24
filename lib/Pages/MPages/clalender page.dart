@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/magic_page.dart';
+import 'package:flutter_application_1/Pages/MPages/magic_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class FeedPage extends StatefulWidget {

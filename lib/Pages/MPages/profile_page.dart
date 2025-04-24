@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'settings_page.dart';
+import '../mesc/settings_page.dart';
 import 'package:flutter_application_1/Pages/all%20items/all_items_page.dart';
 import 'package:flutter_application_1/Pages/Outfits/all_outfits.dart';
-import 'item_details_page.dart';
+import 'package:flutter_application_1/Pages/all items/ItemDetails.dart'; // Ensure this is the correct path
 
 class ProfilePage extends StatefulWidget {
   final VoidCallback onThemeChange;
@@ -258,7 +258,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ItemDetailsPage(item: widget.items[index]),
+                                        builder: (context) => ItemDetails(
+                                          item: widget.items[index],
+                                          itemName: 'Sample Item Name', // Replace with actual item name
+                                          color: 'Sample Color', // Replace with actual color
+                                          size: 'Sample Size', // Replace with actual size
+                                          season: 'Sample Season', // Replace with actual season
+                                          tags: ['Sample Tag 1', 'Sample Tag 2'], // Replace with actual tags
+                                        ),
                                       ),
                                     );
                                   },
@@ -373,7 +380,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ItemDetailsPage(item: widget.items[index]),
+                                        builder: (context) => ItemDetails(
+                                          item: widget.items[index],
+                                          itemName: 'Sample Item Name', // Replace with actual item name
+                                          color: 'Sample Color', // Replace with actual color
+                                          size: 'Sample Size', // Replace with actual size
+                                          season: 'Sample Season', // Replace with actual season
+                                          tags: ['Sample Tag 1', 'Sample Tag 2'], // Replace with actual tags
+                                        ),
                                       ),
                                     );
                                   },

@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, file_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ItemDetails extends StatelessWidget {
@@ -15,7 +17,7 @@ class ItemDetails extends StatelessWidget {
     required this.color,
     required this.size,
     required this.season,
-    required this.tags,
+    required this.tags, required File item,
   });
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/clalender%20page.dart';
-import 'package:flutter_application_1/Pages/magic_page.dart';
-import 'package:flutter_application_1/Pages/profile_page.dart';
-import 'package:flutter_application_1/Pages/feed_page.dart';
+import 'package:flutter_application_1/Pages/MPages/clalender%20page.dart';
+import 'package:flutter_application_1/Pages/MPages/magic_page.dart';
+import 'package:flutter_application_1/Pages/MPages/profile_page.dart';
+import 'package:flutter_application_1/Pages/MPages/feed_page.dart';
 import 'dart:io';
 
 class MainAppPage extends StatefulWidget {

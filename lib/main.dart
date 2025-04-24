@@ -1,10 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/loading_page.dart';
-import 'package:flutter_application_1/Pages/login_page.dart';
-import 'package:flutter_application_1/Pages/register_page.dart';
-import 'package:flutter_application_1/Pages/main_app_page.dart';
+import 'package:flutter_application_1/Pages/mesc/loading_page.dart';
+import 'package:flutter_application_1/Pages/mesc/login_page.dart';
+import 'package:flutter_application_1/Pages/mesc/register_page.dart';
+import 'package:flutter_application_1/Pages/MPages/main_app_page.dart';
 import 'dart:io';
 
 void main() {
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoadingPage(),
+        '/': (context) => LoadingPage(imageFile: File('path/to/your/image')), // Provide the required imageFile parameter
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/main': (context) => MainAppPage(items: _items, onThemeChange: _cycleTheme),

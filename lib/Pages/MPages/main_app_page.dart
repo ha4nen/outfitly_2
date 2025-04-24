@@ -4,6 +4,7 @@ import 'package:flutter_application_1/Pages/MPages/magic_page.dart';
 import 'package:flutter_application_1/Pages/MPages/profile_page.dart';
 import 'package:flutter_application_1/Pages/MPages/feed_page.dart';
 import 'dart:io';
+import 'package:flutter_application_1/Pages/The+Button/AddItemOptionsPage.dart';
 
 class MainAppPage extends StatefulWidget {
   final List<File> items;
@@ -25,13 +26,12 @@ class _MainAppPageState extends State<MainAppPage> {
     super.initState();
     _pages = [
       WardrobePage(posts: [
-  {
-    'username': 'han',
-    'caption': 'Outfit of the day!',
-  },
-]),
-    
-        MagicPage(onThemeChange: widget.onThemeChange, fromCalendar: false,),
+        {
+          'username': 'han',
+          'caption': 'Outfit of the day!',
+        },
+      ]),
+      MagicPage(onThemeChange: widget.onThemeChange, fromCalendar: false),
       const FeedPage(),
       ProfilePage(items: widget.items, onThemeChange: widget.onThemeChange),
     ];
@@ -72,30 +72,16 @@ class _MainAppPageState extends State<MainAppPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your functionality for the + button here
-          _onAddButtonPressed();
+          // Show AddItemOptionsPage dialog
+          showDialog(
+            context: context,
+            builder: (_) => const AddItemOptionsPage(),
+          );
         },
         backgroundColor: Colors.yellow, // Set the background color of the + button
         child: const Icon(Icons.add, color: Colors.black), // Set the + icon color
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-
-  void _onAddButtonPressed() {
-    // Add your functionality for the + button here
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Item'),
-        content: const Text('This is where you can add a new item.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
     );
   }
 }

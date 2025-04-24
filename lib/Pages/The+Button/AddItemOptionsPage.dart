@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'loading_page.dart';
+import '../mesc/loading_page.dart';
 
 class AddItemOptionsPage extends StatelessWidget {
   const AddItemOptionsPage({super.key});

@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:flutter_application_1/Pages/The+Button/ConfirmPhotoPage.dart';
 
 class LoadingPage extends StatefulWidget {
-  const LoadingPage({super.key, required File imageFile});
+  final File imageFile;
+
+  const LoadingPage({super.key, required this.imageFile});
 
   @override
   State<LoadingPage> createState() => _LoadingPageState();
@@ -14,32 +15,23 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    // Simulate a delay before navigating to the login page
-    Timer(const Duration(seconds: 1), () {
-      Navigator.pushReplacementNamed(context, '/login');
-    });
+    _simulateAIAnalysis();
+  }
+
+  Future<void> _simulateAIAnalysis() async {
+    await Future.delayed(const Duration(seconds: 3)); // simulate AI
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ConfirmPhotoPage(imageFile: widget.imageFile),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              '🛍️',
-              style: TextStyle(fontSize: 80), // Emoji in the center
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Loading...',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }

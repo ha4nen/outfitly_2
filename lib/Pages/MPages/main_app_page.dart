@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, prefer_function_declarations_over_variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/MPages/clalender%20page.dart';
 import 'package:flutter_application_1/Pages/MPages/magic_page.dart';
@@ -18,6 +20,7 @@ class MainAppPage extends StatefulWidget {
 
 class _MainAppPageState extends State<MainAppPage> {
   int _currentIndex = 0;
+  int _previousIndex = 0;
 
   late final List<Widget> _pages;
 
@@ -37,16 +40,34 @@ class _MainAppPageState extends State<MainAppPage> {
     ];
   }
 
+  void _navigateToPage(int index) {
+    setState(() {
+      _previousIndex = _currentIndex;
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (child, animation) {
+          final isNavigatingRight = _currentIndex > _previousIndex;
+          var tween = Tween(
+            begin: Offset(isNavigatingRight ? 1.0 : -1.0, 0.0),
+            end: Offset.zero,
+          ).chain(CurveTween(curve: Curves.easeInOut));
+          return SlideTransition(position: animation.drive(tween), child: child);
+        },
+        child: _pages[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          if (index != _currentIndex) {
+            _navigateToPage(index);
+          }
         },
         backgroundColor: Colors.black, // Set the background color of the navigation bar
         selectedItemColor: Colors.yellow, // Set the color for the selected item

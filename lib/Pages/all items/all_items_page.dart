@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Pages/all%20items/SubDIn.dart';
 import 'dart:io';
 
 import 'package:flutter_application_1/Pages/all%20items/catagories/Tops/tops.dart';
@@ -99,9 +100,7 @@ class _AllItemsPageState extends State<AllItemsPage> {
     );
   }
 
-  Widget _buildCategorySection(String title, Map<String, List<File>> categorizedItems, Widget destinationPage) {
-    final flatList = categorizedItems.values.expand((e) => e).toList();
-
+  Widget _buildCategorySection(String title, Map<String, List<File>> categorizedItems) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,7 +108,9 @@ class _AllItemsPageState extends State<AllItemsPage> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => destinationPage),
+              MaterialPageRoute(
+                builder: (context) => SubDIn(subCategory: title), // Navigate to Catagory page
+              ),
             );
           },
           child: Text(
@@ -118,7 +119,7 @@ class _AllItemsPageState extends State<AllItemsPage> {
           ),
         ),
         const SizedBox(height: 8),
-        flatList.isEmpty
+        categorizedItems.isEmpty
             ? Container(
                 height: 150,
                 color: const Color.fromARGB(255, 240, 240, 240),
@@ -128,9 +129,9 @@ class _AllItemsPageState extends State<AllItemsPage> {
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: flatList.length,
+                  itemCount: categorizedItems.values.expand((e) => e).length,
                   itemBuilder: (context, index) {
-                    final file = flatList[index];
+                    final file = categorizedItems.values.expand((e) => e).toList()[index];
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.file(
@@ -193,22 +194,18 @@ class _AllItemsPageState extends State<AllItemsPage> {
               _buildCategorySection(
                 'Tops',
                 widget.categorizedTops,
-                TopsPage(categorizedTops: widget.categorizedTops),
               ),
               _buildCategorySection(
                 'Bottoms',
                 widget.categorizedBottoms,
-                BottomsPage(categorizedBottoms: widget.categorizedBottoms),
               ),
               _buildCategorySection(
                 'Accessories',
                 widget.categorizedAccessories,
-                AccessoriesPage(categorizedAccessories: widget.categorizedAccessories),
               ),
               _buildCategorySection(
                 'Shoes',
                 widget.categorizedShoes,
-                ShoesPage(categorizedShoes: widget.categorizedShoes),
               ),
             ],
           ),

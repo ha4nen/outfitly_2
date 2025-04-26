@@ -19,7 +19,7 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Future<void> _simulateAIAnalysis() async {
-    await Future.delayed(const Duration(seconds: 3)); // simulate AI
+    await Future.delayed(const Duration(seconds: 1)); // simulate AI
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

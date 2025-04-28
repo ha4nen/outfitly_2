@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Pages/The+Button/ConfirmPhotoPage.dart';
 
 class LoadingPage extends StatefulWidget {
-  final File imageFile;
+  final Widget Function() nextPageBuilder; // Function to build the next page
+  final File? imageFile; // Optional image file for specific cases
 
-  const LoadingPage({super.key, required this.imageFile});
+  const LoadingPage({
+    super.key,
+    required this.nextPageBuilder,
+    this.imageFile,
+  });
 
   @override
   State<LoadingPage> createState() => _LoadingPageState();
@@ -19,12 +23,10 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   Future<void> _simulateAIAnalysis() async {
-    await Future.delayed(const Duration(seconds: 1)); // simulate AI
+    await Future.delayed(const Duration(seconds: 1)); // Simulate loading
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (_) => ConfirmPhotoPage(imageFile: widget.imageFile),
-      ),
+      MaterialPageRoute(builder: (_) => widget.nextPageBuilder()),
     );
   }
 

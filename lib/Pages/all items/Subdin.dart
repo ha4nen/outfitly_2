@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SubDIn extends StatelessWidget {
   final String subCategory;
 
-  const SubDIn({Key? key, required this.subCategory}) : super(key: key);
+  const SubDIn({super.key, required this.subCategory});
 
   @override
   Widget build(BuildContext context) {

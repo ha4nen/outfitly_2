@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/all%20items/SubDIn.dart';
 import 'dart:io';
 
-import 'package:flutter_application_1/Pages/all%20items/catagories/Tops/tops.dart';
-import 'package:flutter_application_1/Pages/all%20items/catagories/Bottoms/bottoms.dart';
-import 'package:flutter_application_1/Pages/all%20items/catagories/Accessories/accessories.dart';
-import 'package:flutter_application_1/Pages/all%20items/catagories/Shoes/shoes.dart';
 
 class AllItemsPage extends StatefulWidget {
   final Map<String, List<File>> categorizedTops;

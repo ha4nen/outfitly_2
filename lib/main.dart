@@ -41,7 +41,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoadingPage(imageFile: File('path/to/your/image')), // Provide the required imageFile parameter
+        '/': (context) => LoadingPage(
+              imageFile: File('path/to/your/image'),
+              nextPageBuilder: () => const LoginPage(),
+            ), // Provide the required imageFile parameter
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/main': (context) => MainAppPage(items: _items, onThemeChange: _cycleTheme),

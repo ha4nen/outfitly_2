@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Pages/The+Button/ConfirmPhotoPage.dart';
 import 'package:image_picker/image_picker.dart';
 import '../mesc/loading_page.dart';
 
@@ -14,7 +15,10 @@ class AddItemOptionsPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => LoadingPage(imageFile: File(pickedFile.path)),
+          builder: (_) => LoadingPage(
+            imageFile: File(pickedFile.path),
+            nextPageBuilder: () => ConfirmPhotoPage(imageFile: File(pickedFile.path)), // Navigate to ConfirmYourPhotoPage
+          ),
         ),
       );
     }

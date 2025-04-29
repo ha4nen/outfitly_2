@@ -34,61 +34,61 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Outfit App',
       theme: ThemeData(
-        primaryColor: const Color(0xFFE0BBE4), // Lavender
-        hintColor: const Color(0xFF9A4DFF), // Bold Purple
-        scaffoldBackgroundColor: const Color(0xFFFAFAFA), // Light Purple Grey
+        primaryColor: const Color(0xFF3C096C), // Dark Purple
+        hintColor: const Color(0xFFC77DFF), // Electric Purple
+        scaffoldBackgroundColor: const Color(0xFFFFFFFF), // White
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Color(0xFF222222)), // Dark Grey
-          bodyMedium: TextStyle(color: Color(0xFF222222)), // Dark Grey
+          bodyLarge: TextStyle(color: Color.fromARGB(255, 0, 0, 0)), // black
+          bodyMedium: TextStyle(color: Color.fromARGB(255, 0, 0, 0)), // black
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFE0BBE4), // Lavender
-          foregroundColor: Color(0xFF222222), // Dark Grey
+          backgroundColor: Color(0xFF3C096C), // Dark Purple
+          foregroundColor: Color(0xFFFFFFFF), // White
         ),
         buttonTheme: ButtonThemeData(
-          buttonColor: const Color(0xFF9A4DFF), // Bold Purple
+          buttonColor: const Color(0xFFC77DFF), // Electric Purple
           textTheme: ButtonTextTheme.primary,
         ),
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFFE0BBE4), // Lavender
-          onPrimary: Color(0xFF222222), // Dark Grey
-          secondary: Color(0xFF9A4DFF), // Bold Purple
+          primary: Color(0xFF3C096C), // Dark Purple
+          onPrimary: Color(0xFFFFFFFF), // White
+          secondary: Color(0xFFC77DFF), // Electric Purple
           onSecondary: Color(0xFFFFFFFF), // White
           error: Color(0xFFB00020), // Error Red
           onError: Color(0xFFFFFFFF), // White
-          background: Color(0xFFEDE7F6), // Light Purple Grey
-          onBackground: Color(0xFF222222), // Dark Grey
-          surface: Color(0xFFFFFFFF), // White
-          onSurface: Color(0xFF222222), // Dark Grey
+          background: Color(0xFFFFFFFF), // White
+          onBackground: Color.fromARGB(255, 0, 0, 0), // black nav buttons
+          surface: Color(0xFFF0F0F0), // Light Grey
+          onSurface: Color(0xFFFFFFFF), // White
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
-        primaryColor: const Color(0xFFE0BBE4), // Lavender
-        scaffoldBackgroundColor: const Color(0xFF222222), // Dark Grey
+        primaryColor: const Color(0xFF3C096C), // Dark Purple
+        scaffoldBackgroundColor: const Color(0xFF000000), // Black
         colorScheme: const ColorScheme(
           brightness: Brightness.dark,
-          primary: Color(0xFFE0BBE4), // Lavender
-          onPrimary: Color(0xFFFAFAFA), // Soft White
-          secondary: Color(0xFF9A4DFF), // Bold Purple
-          onSecondary: Color(0xFFFAFAFA), // Soft White
+          primary: Color(0xFF3C096C), // Dark Purple
+          onPrimary: Color(0xFFD3D3D3), // Slightly Greyish White
+          secondary: Color(0xFFC77DFF), // Electric Purple
+          onSecondary: Color(0xFFD3D3D3), // Slightly Greyish White
           error: Color(0xFFCF6679), // Error Red
-          onError: Color(0xFF222222), // Dark Grey
-          background: Color(0xFF444444), // Darker Grey
-          onBackground: Color(0xFFFAFAFA), // Soft White
-          surface: Color(0xFF333333), // Dark Grey
-          onSurface: Color(0xFFFAFAFA), // Soft White
+          onError: Color(0xFFD3D3D3), // Slightly Greyish White
+          background: Color(0xFF000000), // Black
+          onBackground: Color(0xFFD3D3D3), // Slightly Greyish White
+          surface: Color(0xFF121212), // Very Dark Grey
+          onSurface: Color(0xFFB0B0B0), // Soft Grey
         ),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Color(0xFFFAFAFA)), // Soft White
-          bodyMedium: TextStyle(color: Color(0xFFFAFAFA)), // Soft White
+          bodyLarge: TextStyle(color: Color(0xFFD3D3D3)), // Slightly Greyish White
+          bodyMedium: TextStyle(color: Color(0xFFB0B0B0)), // Soft Grey
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF9A4DFF), // Bold Purple
-          foregroundColor: Color(0xFFFAFAFA), // Soft White
+          backgroundColor: Color(0xFF3C096C), // Dark Purple
+          foregroundColor: Color(0xFFD3D3D3), // Slightly Greyish White
         ),
         buttonTheme: ButtonThemeData(
-          buttonColor: const Color(0xFF9A4DFF), // Bold Purple
+          buttonColor: const Color(0xFFC77DFF), // Electric Purple
           textTheme: ButtonTextTheme.primary,
         ),
       ),

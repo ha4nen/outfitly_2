@@ -1,11 +1,9 @@
-// ignore_for_file: unused_local_variable, prefer_function_declarations_over_variables
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/MPages/clalender%20page.dart';
 import 'package:flutter_application_1/Pages/MPages/magic_page.dart';
 import 'package:flutter_application_1/Pages/MPages/profile_page.dart';
 import 'package:flutter_application_1/Pages/MPages/feed_page.dart';
-import 'dart:io';
 import 'package:flutter_application_1/Pages/The+Button/AddItemOptionsPage.dart';
 
 class MainAppPage extends StatefulWidget {
@@ -18,64 +16,120 @@ class MainAppPage extends StatefulWidget {
   State<MainAppPage> createState() => _MainAppPageState();
 }
 
-class _MainAppPageState extends State<MainAppPage> {
+class _MainAppPageState extends State<MainAppPage> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
-  int _previousIndex = 0;
+  int _nextIndex = 0;
+  Offset _tapPosition = Offset.zero;
 
   late final List<Widget> _pages;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  bool _isAnimating = false;
 
   @override
   void initState() {
     super.initState();
     _pages = [
-      WardrobePage(posts: [
-        {
-          'username': 'han',
-          'caption': 'Outfit of the day!',
-        },
-      ]),
-      MagicPage(onThemeChange: widget.onThemeChange, fromCalendar: false),
-      const FeedPage(),
-      ProfilePage(items: widget.items, onThemeChange: widget.onThemeChange),
+      WardrobePage(
+        key: const ValueKey('FeedPage'),
+        posts: [
+          {
+            'username': 'han',
+            'caption': 'Outfit of the day!',
+          },
+        ],
+      ),
+      MagicPage(
+        key: const ValueKey('MagicPage'),
+        onThemeChange: widget.onThemeChange,
+        fromCalendar: false,
+      ),
+      const FeedPage(
+        key: ValueKey('CalendarPage'),
+      ),
+      ProfilePage(
+        key: const ValueKey('ProfilePage'),
+        items: widget.items,
+        onThemeChange: widget.onThemeChange,
+      ),
     ];
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _currentIndex = _nextIndex;
+          _isAnimating = false;
+        });
+        _controller.reset();
+      }
+    });
   }
 
-  void _navigateToPage(int index) {
-    setState(() {
-      _previousIndex = _currentIndex;
-      _currentIndex = index;
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _navigateToPage(int index, Offset tapPosition) {
+    if (index != _currentIndex && !_isAnimating) {
+      setState(() {
+        _nextIndex = index;
+        _isAnimating = true;
+        _tapPosition = tapPosition;
+      });
+      _controller.forward(from: 0.0);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        transitionBuilder: (child, animation) {
-          final isNavigatingRight = _currentIndex > _previousIndex;
-          var tween = Tween(
-            begin: Offset(isNavigatingRight ? 1.0 : -1.0, 0.0),
-            end: Offset.zero,
-          ).chain(CurveTween(curve: Curves.easeInOut));
-          return SlideTransition(position: animation.drive(tween), child: child);
-        },
-        child: _pages[_currentIndex],
+      body: Stack(
+        children: [
+          _pages[_currentIndex],
+          if (_isAnimating)
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return ClipOval(
+                  clipper: _RevealClipper(_animation.value, _tapPosition),
+                  child: _pages[_nextIndex],
+                );
+              },
+            ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index != _currentIndex) {
-            _navigateToPage(index);
-          }
+        onTap: (index) async {
+          RenderBox? box = context.findRenderObject() as RenderBox?;
+          Offset _ = box?.size.center(Offset.zero) ?? Offset.zero;
+
+          // Calculate approximate tap position (adjust depending on icon location)
+          double screenWidth = MediaQuery.of(context).size.width;
+          double itemWidth = screenWidth / 4; // 4 items
+          double x = itemWidth * (index + 0.5); // center of tapped item
+          double y = MediaQuery.of(context).size.height; // bottom of screen
+
+          _navigateToPage(index, Offset(x, y - 30)); // Adjust slightly up to look cleaner
         },
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic background color
-        selectedItemColor: Theme.of(context).colorScheme.secondary, // Dynamic selected item color
-        unselectedItemColor: Theme.of(context).colorScheme.onBackground, // Dynamic unselected item color
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        unselectedItemColor: Theme.of(context).colorScheme.onBackground,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.checkroom),
-            label: 'Wardrobe',
+            icon: Icon(Icons.feed_rounded),
+            label: 'Feed',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.auto_awesome),
@@ -93,16 +147,33 @@ class _MainAppPageState extends State<MainAppPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Show AddItemOptionsPage dialog
           showDialog(
             context: context,
             builder: (_) => const AddItemOptionsPage(),
           );
         },
-        backgroundColor: Theme.of(context).colorScheme.secondary, // Dynamic background color
-        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondary), // Dynamic icon color
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondary),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+}
+
+class _RevealClipper extends CustomClipper<Rect> {
+  final double revealPercent;
+  final Offset center;
+
+  _RevealClipper(this.revealPercent, this.center);
+
+  @override
+  Rect getClip(Size size) {
+    final maxRadius = size.longestSide * 1.2;
+    final radius = maxRadius * revealPercent;
+    return Rect.fromCircle(center: center, radius: radius);
+  }
+
+  @override
+  bool shouldReclip(_RevealClipper oldClipper) =>
+      revealPercent != oldClipper.revealPercent || center != oldClipper.center;
 }

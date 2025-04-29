@@ -13,7 +13,7 @@ class SettingsPage extends StatelessWidget {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color), // Dynamic icon color
+          icon: const Icon(Icons.arrow_back, color: Colors.white), // Explicitly set to white
           onPressed: () {
             Navigator.of(context).pop(); // Close the settings page
           },

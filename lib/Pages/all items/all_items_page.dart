@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/all%20items/SubDIn.dart';
@@ -24,7 +24,7 @@ class AllItemsPage extends StatefulWidget {
 
 class _AllItemsPageState extends State<AllItemsPage> {
   final Set<String> _sectionsMarkedForDelete = {};
-  bool _isDeleteMode = false;
+  final bool _isDeleteMode = false;
 
   void _showAddCategoryDialog() {
     String newCategory = '';

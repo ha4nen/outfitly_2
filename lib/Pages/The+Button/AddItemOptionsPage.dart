@@ -26,19 +26,34 @@ class AddItemOptionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textColor = theme.brightness == Brightness.dark
+        ? Colors.white // White text in dark theme
+        : Colors.black; // Black text in light theme
+
     return AlertDialog(
-      title: const Text("Add Item"),
+      backgroundColor: theme.colorScheme.surface, // Dynamic surface color
+      title: Text(
+        "Add Item",
+        style: TextStyle(color: textColor), // Dynamic text color
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.camera_alt),
-            title: const Text("Take a Photo"),
+            leading: Icon(Icons.camera_alt, color: theme.colorScheme.primary), // Dynamic icon color
+            title: Text(
+              "Take a Photo",
+              style: TextStyle(color: textColor), // Dynamic text color
+            ),
             onTap: () => _pickImage(context, ImageSource.camera),
           ),
           ListTile(
-            leading: const Icon(Icons.photo_library),
-            title: const Text("Choose from Library"),
+            leading: Icon(Icons.photo_library, color: theme.colorScheme.primary), // Dynamic icon color
+            title: Text(
+              "Choose from Library",
+              style: TextStyle(color: textColor), // Dynamic text color
+            ),
             onTap: () => _pickImage(context, ImageSource.gallery),
           ),
         ],

@@ -73,7 +73,12 @@ class _ProfilePageState extends State<ProfilePage> {
         foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         actions: [
           IconButton(
-            icon: Icon(Icons.settings, color: Theme.of(context).iconTheme.color), // Dynamic icon color
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white // White in light theme
+                  : Theme.of(context).iconTheme.color, // Default in dark theme
+            ),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

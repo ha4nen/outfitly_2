@@ -74,7 +74,11 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Item Details")),
+      appBar: AppBar(
+        title: const Text("Item Details"),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -97,6 +101,10 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveItem,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary, // Dynamic button color
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary, // Dynamic text color
+                ),
                 child: const Text("Save Item"),
               ),
             ],
@@ -110,7 +118,17 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
-        decoration: InputDecoration(labelText: label),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic label text color
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).dividerColor), // Dynamic border color
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary), // Dynamic focused border color
+          ),
+        ),
+        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic input text color
         onChanged: (value) => itemData[key] = value,
       ),
     );
@@ -120,7 +138,16 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: DropdownButtonFormField<String>(
-        decoration: const InputDecoration(labelText: "Main Category"),
+        decoration: InputDecoration(
+          labelText: "Main Category",
+          labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic label text color
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).dividerColor), // Dynamic border color
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary), // Dynamic focused border color
+          ),
+        ),
         items: {
           'Tops': ['T-Shirts', 'LongSleeves', 'Shirts'],
           'Bottoms': ['Jeans', 'Shorts', 'Joggers'],
@@ -129,7 +156,10 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
         }.keys.map((String category) {
           return DropdownMenuItem<String>(
             value: category,
-            child: Text(category),
+            child: Text(
+              category,
+              style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic dropdown text color
+            ),
           );
         }).toList(),
         onChanged: (value) {
@@ -152,11 +182,23 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: DropdownButtonFormField<String>(
-        decoration: const InputDecoration(labelText: "Sub-category"),
+        decoration: InputDecoration(
+          labelText: "Sub-category",
+          labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic label text color
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).dividerColor), // Dynamic border color
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary), // Dynamic focused border color
+          ),
+        ),
         items: subCategories.map((String subCategory) {
           return DropdownMenuItem<String>(
             value: subCategory,
-            child: Text(subCategory),
+            child: Text(
+              subCategory,
+              style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic dropdown text color
+            ),
           );
         }).toList(),
         onChanged: itemData['category'] == null
@@ -167,7 +209,10 @@ class _ItemDetailsFormPageState extends State<ItemDetailsFormPage> {
                 });
               },
         value: itemData['subcategory'],
-        disabledHint: const Text('Select a main category first'),
+        disabledHint: Text(
+          'Select a main category first',
+          style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic disabled hint color
+        ),
       ),
     );
   }

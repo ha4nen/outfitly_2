@@ -20,6 +20,8 @@ class SubDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(subcategoryName), // Display the subcategory name in the title
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -44,11 +46,11 @@ class SubDetails extends StatelessWidget {
               width: 150,
               height: 150,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Theme.of(context).colorScheme.surface, // Dynamic background color
                 borderRadius: BorderRadius.circular(12), // Soft rounded corners
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Theme.of(context).shadowColor.withOpacity(0.1), // Dynamic shadow color
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -57,7 +59,11 @@ class SubDetails extends StatelessWidget {
               child: Center(
                 child: Text(
                   itemName,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
+                  ),
                 ),
               ),
             ),

@@ -10,8 +10,10 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color), // Dynamic icon color
           onPressed: () {
             Navigator.of(context).pop(); // Close the settings page
           },
@@ -22,16 +24,23 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Settings',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
+              ),
             ),
             const SizedBox(height: 16),
 
             // Profile Info Option
             ListTile(
-              title: const Text('Profile Info'),
-              trailing: const Icon(Icons.arrow_forward),
+              title: Text(
+                'Profile Info',
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic text color
+              ),
+              trailing: Icon(Icons.arrow_forward, color: Theme.of(context).iconTheme.color), // Dynamic icon color
               onTap: () {
                 // Add functionality here in the future
               },
@@ -41,6 +50,10 @@ class SettingsPage extends StatelessWidget {
             // Theme Change Button
             ElevatedButton(
               onPressed: onThemeChange,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary, // Dynamic button color
+                foregroundColor: Theme.of(context).colorScheme.onPrimary, // Dynamic text color
+              ),
               child: const Text('Change Theme'),
             ),
             const SizedBox(height: 16),
@@ -52,7 +65,8 @@ class SettingsPage extends StatelessWidget {
                 Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Set the button color to red
+                backgroundColor: Theme.of(context).colorScheme.error, // Dynamic button color
+                foregroundColor: Theme.of(context).colorScheme.onError, // Dynamic text color
               ),
               child: const Text('Sign Out'),
             ),

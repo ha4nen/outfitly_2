@@ -69,9 +69,9 @@ class _MainAppPageState extends State<MainAppPage> {
             _navigateToPage(index);
           }
         },
-        backgroundColor: Colors.black, // Set the background color of the navigation bar
-        selectedItemColor: Colors.yellow, // Set the color for the selected item
-        unselectedItemColor: Colors.white, // Set the color for unselected items
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic background color
+        selectedItemColor: Theme.of(context).colorScheme.secondary, // Dynamic selected item color
+        unselectedItemColor: Theme.of(context).colorScheme.onBackground, // Dynamic unselected item color
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.checkroom),
@@ -99,8 +99,8 @@ class _MainAppPageState extends State<MainAppPage> {
             builder: (_) => const AddItemOptionsPage(),
           );
         },
-        backgroundColor: Colors.yellow, // Set the background color of the + button
-        child: const Icon(Icons.add, color: Colors.black), // Set the + icon color
+        backgroundColor: Theme.of(context).colorScheme.secondary, // Dynamic background color
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondary), // Dynamic icon color
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

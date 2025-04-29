@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Pages/all%20items/SubDIn.dart';
 import 'dart:io';
 
-
 class AllItemsPage extends StatefulWidget {
   final Map<String, List<File>> categorizedTops;
   final Map<String, List<File>> categorizedBottoms;
@@ -105,21 +104,30 @@ class _AllItemsPageState extends State<AllItemsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SubDIn(subCategory: title), // Navigate to Catagory page
+                builder: (context) => SubDIn(subCategory: title), // Navigate to Category page
               ),
             );
           },
           child: Text(
             title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary, // Dynamic text color
+            ),
           ),
         ),
         const SizedBox(height: 8),
         categorizedItems.isEmpty
             ? Container(
                 height: 150,
-                color: const Color.fromARGB(255, 240, 240, 240),
-                child: const Center(child: Text('No items to display')),
+                color: Theme.of(context).colorScheme.surface, // Dynamic placeholder background color
+                child: Center(
+                  child: Text(
+                    'No items to display',
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic text color
+                  ),
+                ),
               )
             : SizedBox(
                 height: 150,
@@ -148,38 +156,15 @@ class _AllItemsPageState extends State<AllItemsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Dynamic background color
       appBar: AppBar(
-        title: const Text('All Items', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF2C3E50),
+        title: const Text('All Items'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color), // Dynamic icon color
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
-            onSelected: (value) {
-              if (value == 'delete') {
-                setState(() {
-                  _isDeleteMode = !_isDeleteMode;
-                });
-              } else if (value == 'customize') {
-                _showAddCategoryDialog();
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                value: 'delete',
-                child: Text(_isDeleteMode ? 'Cancel Delete Mode' : 'Delete Sections'),
-              ),
-              const PopupMenuItem(
-                value: 'customize',
-                child: Text('Customize Your Items'),
-              ),
-            ],
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -187,22 +172,10 @@ class _AllItemsPageState extends State<AllItemsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildCategorySection(
-                'Tops',
-                widget.categorizedTops,
-              ),
-              _buildCategorySection(
-                'Bottoms',
-                widget.categorizedBottoms,
-              ),
-              _buildCategorySection(
-                'Accessories',
-                widget.categorizedAccessories,
-              ),
-              _buildCategorySection(
-                'Shoes',
-                widget.categorizedShoes,
-              ),
+              _buildCategorySection('Tops', widget.categorizedTops),
+              _buildCategorySection('Bottoms', widget.categorizedBottoms),
+              _buildCategorySection('Accessories', widget.categorizedAccessories),
+              _buildCategorySection('Shoes', widget.categorizedShoes),
             ],
           ),
         ),

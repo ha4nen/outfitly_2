@@ -21,11 +21,9 @@ class _MagicPageState extends State<MagicPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'AI/Create Outfit',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.black,
+        title: const Text('AI/Create Outfit'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,9 +31,12 @@ class _MagicPageState extends State<MagicPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Description field
-            const Text(
+            Text(
               'Click the button for a Truly AI Generated OUTFIT, Choose an Item to generate around that ITEM.',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16), // Space below description
@@ -66,10 +67,14 @@ class _MagicPageState extends State<MagicPage> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: selectedItemIndex == index ? Colors.blue : Colors.grey[300],
+                                color: selectedItemIndex == index
+                                    ? Theme.of(context).colorScheme.secondary // Dynamic selected color
+                                    : Theme.of(context).colorScheme.surface, // Dynamic unselected color
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: selectedItemIndex == index ? Colors.blueAccent : Colors.grey,
+                                  color: selectedItemIndex == index
+                                      ? Theme.of(context).colorScheme.primary // Dynamic border color
+                                      : Theme.of(context).dividerColor, // Dynamic unselected border color
                                   width: 2,
                                 ),
                               ),
@@ -77,7 +82,9 @@ class _MagicPageState extends State<MagicPage> {
                                 child: Text(
                                   'Item ${index + 1}',
                                   style: TextStyle(
-                                    color: selectedItemIndex == index ? Colors.white : Colors.black,
+                                    color: selectedItemIndex == index
+                                        ? Theme.of(context).colorScheme.onSecondary // Dynamic text color
+                                        : Theme.of(context).textTheme.bodyMedium?.color, // Dynamic unselected text color
                                   ),
                                 ),
                               ),
@@ -111,6 +118,8 @@ class _MagicPageState extends State<MagicPage> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     minimumSize: const Size(double.infinity, 50), // Full-width button
+                    backgroundColor: Theme.of(context).colorScheme.primary, // Dynamic button color
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary, // Dynamic text color
                   ),
                   child: Text(selectedItemIndex != null ? 'Help with AI' : 'Truly AI'),
                 ),
@@ -133,6 +142,8 @@ class _MagicPageState extends State<MagicPage> {
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     minimumSize: const Size(double.infinity, 50), // Full-width button
+                    backgroundColor: Theme.of(context).colorScheme.secondary, // Dynamic button color
+                    foregroundColor: Theme.of(context).colorScheme.onSecondary, // Dynamic text color
                   ),
                   child: const Text('Make ur own'),
                 ),

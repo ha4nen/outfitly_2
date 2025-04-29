@@ -25,19 +25,27 @@ class _WardrobePageState extends State<WardrobePage> {
     });
   }
 
-  // Add this for tracking the "like heart" animation per post
-  final List<bool> _showHeart = List.generate(10, (_) => false);  // Assuming 10 posts for now
+  final List<bool> _showHeart = List.generate(10, (_) => false); // Assuming 10 posts for now
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feed', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.black,
+        title: const Text(
+          'Feed',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
       ),
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Dynamic background color
       body: posts.isEmpty
-          ? const Center(child: Text("No posts available"))
+          ? Center(
+              child: Text(
+                "No posts available",
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic text color
+              ),
+            )
           : ListView.builder(
               itemCount: posts.length,
               itemBuilder: (context, index) => _buildPost(index),
@@ -48,13 +56,13 @@ class _WardrobePageState extends State<WardrobePage> {
   Widget _buildPost(int index) {
     final post = posts[index];
     final bool isLiked = post['liked'] ?? false;
-    bool showHeart = _showHeart[index];  // Track heart visibility per post
+    bool showHeart = _showHeart[index]; // Track heart visibility per post
 
     return GestureDetector(
       onDoubleTap: () {
         setState(() {
           _toggleLike(index);
-          _showHeart[index] = true;  // Show heart animation on double-tap
+          _showHeart[index] = true; // Show heart animation on double-tap
         });
 
         // Hide the heart after a brief duration (600ms)
@@ -69,21 +77,31 @@ class _WardrobePageState extends State<WardrobePage> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.0),
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface, // Dynamic card background color
             boxShadow: [
-              BoxShadow(color: Colors.grey.shade300, blurRadius: 10, offset: const Offset(0, 4))
+              BoxShadow(
+                color: Theme.of(context).shadowColor.withOpacity(0.2), // Dynamic shadow color
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.black,
-                  child: Icon(Icons.person, color: Colors.white),
+                  backgroundColor: Theme.of(context).colorScheme.primary, // Dynamic avatar background color
+                  child: Icon(Icons.person, color: Theme.of(context).colorScheme.onPrimary), // Dynamic icon color
                 ),
-                title: Text(post['username'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  post['username'],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
+                  ),
+                ),
                 trailing: PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'delete') {
@@ -102,7 +120,10 @@ class _WardrobePageState extends State<WardrobePage> {
                                 Navigator.pop(context);
                                 _deletePost(index);
                               },
-                              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(color: Theme.of(context).colorScheme.error), // Dynamic delete button color
+                              ),
                             ),
                           ],
                         ),
@@ -117,7 +138,7 @@ class _WardrobePageState extends State<WardrobePage> {
                       ),
                     ];
                   },
-                  icon: const Icon(Icons.more_vert),
+                  icon: Icon(Icons.more_vert, color: Theme.of(context).iconTheme.color), // Dynamic icon color
                 ),
               ),
               Stack(
@@ -135,8 +156,13 @@ class _WardrobePageState extends State<WardrobePage> {
                         : Container(
                             height: 300,
                             width: double.infinity,
-                            color: Colors.grey[300],
-                            child: const Center(child: Text("Image not found")),
+                            color: Theme.of(context).colorScheme.background, // Dynamic placeholder background color
+                            child: Center(
+                              child: Text(
+                                "Image not found",
+                                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic text color
+                              ),
+                            ),
                           ),
                   ),
                   if (showHeart)
@@ -151,14 +177,19 @@ class _WardrobePageState extends State<WardrobePage> {
                       onTap: () => _toggleLike(index),
                       child: Icon(
                         isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: isLiked ? Colors.red : Colors.black,
+                        color: isLiked
+                            ? Theme.of(context).colorScheme.error // Dynamic liked color
+                            : Theme.of(context).iconTheme.color, // Dynamic unliked color
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         post['caption'] ?? '',
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).textTheme.bodyMedium?.color, // Dynamic text color
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

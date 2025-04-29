@@ -24,7 +24,9 @@ class ItemDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(itemName), // Display the item name in the app bar
+        title: Text(itemName),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,22 +36,18 @@ class ItemDetails extends StatelessWidget {
             // Item Image Container
             Center(
               child: Container(
-                width: 200, // Fixed width
-                height: 200, // Fixed height
+                width: 200,
+                height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300], // Placeholder background color
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  color: Theme.of(context).colorScheme.surface, // Dynamic placeholder background color
+                  borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Theme.of(context).shadowColor.withOpacity(0.1), // Dynamic shadow color
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
                   ],
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/example_item.png'), // Replace with your image path
-                    fit: BoxFit.cover,
-                  ),
                 ),
               ),
             ),
@@ -58,9 +56,10 @@ class ItemDetails extends StatelessWidget {
             // Item Name
             Text(
               itemName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
               ),
             ),
             const SizedBox(height: 16),
@@ -68,23 +67,25 @@ class ItemDetails extends StatelessWidget {
             // Item Details
             Text(
               'Details:',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
+                color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
               ),
             ),
             const SizedBox(height: 8),
-            Text('Colour: $color', style: const TextStyle(fontSize: 16)),
-            Text('Size: $size', style: const TextStyle(fontSize: 16)),
-            Text('Season: $season', style: const TextStyle(fontSize: 16)),
+            Text('Colour: $color', style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium?.color)),
+            Text('Size: $size', style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium?.color)),
+            Text('Season: $season', style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyMedium?.color)),
             const SizedBox(height: 16),
 
             // Tags
             Text(
               'Tags:',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
+                color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
               ),
             ),
             const SizedBox(height: 8),
@@ -93,7 +94,7 @@ class ItemDetails extends StatelessWidget {
               children: tags
                   .map((tag) => Chip(
                         label: Text(tag),
-                        backgroundColor: Colors.blueAccent.withOpacity(0.2),
+                        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2), // Dynamic chip color
                       ))
                   .toList(),
             ),

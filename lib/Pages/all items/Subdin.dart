@@ -20,12 +20,17 @@ class SubDIn extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Items in $subCategory'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
       ),
       body: ListView.builder(
         itemCount: subCategoryItems.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(subCategoryItems[index]),
+            title: Text(
+              subCategoryItems[index],
+              style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic text color
+            ),
           );
         },
       ),

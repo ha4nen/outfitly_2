@@ -83,17 +83,18 @@ class _ShoesPageState extends State<ShoesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Dynamic background color
       appBar: AppBar(
-        title: const Text('Shoes', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+        title: const Text('Shoes'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color), // Dynamic icon color
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: Icon(Icons.more_vert, color: Theme.of(context).iconTheme.color), // Dynamic icon color
             onSelected: (value) {
               if (value == 'delete') {
                 setState(() {
@@ -106,11 +107,17 @@ class _ShoesPageState extends State<ShoesPage> {
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 value: 'delete',
-                child: Text(_isDeleteMode ? 'Cancel Delete Mode' : 'Delete Categories'),
+                child: Text(
+                  _isDeleteMode ? 'Cancel Delete Mode' : 'Delete Categories',
+                  style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic text color
+                ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'customize',
-                child: Text('Customize Your Shoes'),
+                child: Text(
+                  'Customize Your Shoes',
+                  style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color), // Dynamic text color
+                ),
               ),
             ],
           )
@@ -147,15 +154,15 @@ class _ShoesPageState extends State<ShoesPage> {
             children: [
               Text(
                 categoryName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
-                  color: Colors.blueAccent,
+                  color: Theme.of(context).colorScheme.primary, // Dynamic text color
                 ),
               ),
               if (_isDeleteMode)
                 IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  icon: Icon(Icons.delete_outline, color: Theme.of(context).colorScheme.error), // Dynamic icon color
                   onPressed: () => _showDeleteConfirmation(categoryName),
                 ),
             ],
@@ -167,10 +174,15 @@ class _ShoesPageState extends State<ShoesPage> {
                 height: 100,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Theme.of(context).colorScheme.surface, // Dynamic placeholder background color
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Center(child: Text('No items to display')),
+                child: Center(
+                  child: Text(
+                    'No items to display',
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic text color
+                  ),
+                ),
               )
             : Wrap(
                 spacing: 12,
@@ -187,7 +199,7 @@ class _ShoesPageState extends State<ShoesPage> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Theme.of(context).shadowColor.withOpacity(0.1), // Dynamic shadow color
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         )

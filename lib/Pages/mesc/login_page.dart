@@ -7,11 +7,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Login',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.black,
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -23,7 +19,8 @@ class LoginPage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
@@ -33,7 +30,8 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
@@ -41,11 +39,10 @@ class LoginPage extends StatelessWidget {
             // Login Button
             ElevatedButton(
               onPressed: () {
-                // Navigate to the Main App Page after login
                 Navigator.pushReplacementNamed(context, '/main');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
               ),
               child: const Text('Login'),
             ),
@@ -54,7 +51,6 @@ class LoginPage extends StatelessWidget {
             // Forgot Password
             TextButton(
               onPressed: () {
-                // Handle forgot password logic
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -69,20 +65,20 @@ class LoginPage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text(
+              child: Text(
                 'Forgot Password?',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),
 
             // Create New Account
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/register'); // Navigate to the Register Page
+                Navigator.pushNamed(context, '/register');
               },
-              child: const Text(
+              child: Text(
                 'Create New Account',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),
           ],

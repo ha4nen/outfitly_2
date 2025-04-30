@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import '../../SubDetails.dart'; // Import SubDetails page
 
 class BottomsPage extends StatefulWidget {
   final Map<String, List<File>> categorizedBottoms;
@@ -136,23 +137,33 @@ class _BottomsPageState extends State<BottomsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              categoryName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF9B1B30),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubDetails(subcategoryName: categoryName),
               ),
-            ),
-            if (_isDeleteMode)
-              IconButton(
-                icon: const Icon(Icons.delete_outline, color: Color(0xFFFF6F61)),
-                onPressed: () => _showDeleteConfirmation(categoryName),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                categoryName,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF9B1B30),
+                ),
               ),
-          ],
+              if (_isDeleteMode)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Color(0xFFFF6F61)),
+                  onPressed: () => _showDeleteConfirmation(categoryName),
+                ),
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         items.isEmpty

@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'settings_page.dart';
+import '../mesc/settings_page.dart';
 import 'package:flutter_application_1/Pages/all%20items/all_items_page.dart';
 import 'package:flutter_application_1/Pages/Outfits/all_outfits.dart';
-import 'item_details_page.dart';
+import 'package:flutter_application_1/Pages/all items/ItemDetails.dart'; // Ensure this is the correct path
 
 class ProfilePage extends StatefulWidget {
   final VoidCallback onThemeChange;
@@ -68,14 +68,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Profile',
-          style: TextStyle(color: Colors.white), // Set text color to white
-        ),
-        backgroundColor: Colors.black, // Set background color to black
+        title: const Text('Profile'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Dynamic app bar color
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor, // Dynamic text color
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white // White in light theme
+                  : Theme.of(context).iconTheme.color, // Default in dark theme
+            ),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -101,27 +104,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundImage: _profileImage != null
                       ? FileImage(_profileImage!)
                       : null,
+                  backgroundColor: Theme.of(context).colorScheme.surface, // Dynamic background color
                   child: _profileImage == null
-                      ? const Icon(Icons.add_a_photo, size: 30)
+                      ? Icon(Icons.add_a_photo, size: 30, color: Theme.of(context).iconTheme.color) // Dynamic icon color
                       : null,
                 ),
               ),
               const SizedBox(height: 16),
 
-              // Followers and Following Count
-              const Text(
+              // Username
+              Text(
                 '@username',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.bodyLarge?.color, // Dynamic text color
+                ),
               ),
               const SizedBox(height: 8),
-              const Text(
+
+              // Followers and Following Count
+              Text(
                 '0 Following  |  0 Followers',
-                style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).textTheme.bodyMedium?.color, // Dynamic text color
+                ),
               ),
               const SizedBox(height: 16),
 
               // Divider
-              const Divider(thickness: 1),
+              Divider(color: Theme.of(context).dividerColor), // Dynamic divider color
 
               // Items Section Header
               Row(
@@ -133,70 +146,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AllItemsPage(
-                            categorizedTops: {
-                              'T-Shirts': [],
-                              'Shirts': [],
-                              'Blouses': [],
-                              'Tank Tops': [],
-                              'Sweaters': [],
-                              'Hoodies': [],
-                              'Cardigans': [],
-                              'Crop Tops': [],
-                              'Jackets': [],
-                              'Coats': [],
-                              'Vests': [],
-                              'Sportswear Tops': [],
-                            },
-                            categorizedBottoms: {
-                              'Jeans': [],
-                              'Trousers': [],
-                              'Leggings': [],
-                              'Shorts': [],
-                              'Skirts': [],
-                              'Modest Bottoms': [],
-                              'Culottes': [],
-                              'Joggers': [],
-                              'Sweatpants': [],
-                              'Formal Pants': [],
-                              'Overalls': [],
-                              'Capris': [],
-                            },
-                            categorizedAccessories: {
-                              'Hats': [],
-                              'Scarves': [],
-                              'Belts': [],
-                              'Bags': [],
-                              'Jewelry': [],
-                              'Earrings': [],
-                              'Necklaces': [],
-                              'Bracelets': [],
-                              'Rings': [],
-                              'Gloves': [],
-                              'Sunglasses': [],
-                              'Watches': [],
-                              'Hair Accessories': [],
-                              'Ties & Bowties': [],
-                              'Socks': [],
-                              'Hijabs & Covers': [],
-                              'Chiffon Hijabs': [],
-                              'Jersey Hijabs': [],
-                              'Undercaps': [],
-                              'Shawls': [],
-                              'Niqabs': [],
-                              'Khimars': [],
-                            },
-                            categorizedShoes: {
-                              'Sneakers': [],
-                              'Boots': [],
-                              'Flats': [],
-                              'Heels': [],
-                              'Sandals': [],
-                              'Flip-Flops': [],
-                              'Formal Shoes': [],
-                              'Slippers': [],
-                              'Sports Shoes': [],
-                              'Winter Shoes': [],
-                            },
+                            categorizedTops: {},
+                            categorizedBottoms: {},
+                            categorizedAccessories: {},
+                            categorizedShoes: {},
                           ),
                         ),
                       );
@@ -204,22 +157,24 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.primary, // Dynamic background color
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Items',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary, // Dynamic text color
                         ),
                       ),
                     ),
                   ),
-
                   IconButton(
-                    icon: Icon(_isEditing ? Icons.delete : Icons.edit),
+                    icon: Icon(
+                      _isEditing ? Icons.delete : Icons.edit,
+                      color: Theme.of(context).iconTheme.color, // Dynamic icon color
+                    ),
                     onPressed: _isEditing ? _deleteSelectedItems : _toggleEditMode,
                   ),
                 ],
@@ -230,9 +185,12 @@ class _ProfilePageState extends State<ProfilePage> {
               widget.items.isEmpty
                   ? Container(
                       height: 150,
-                      color: Colors.grey[200], // Placeholder for items
-                      child: const Center(
-                        child: Text('No items to display'),
+                      color: Theme.of(context).colorScheme.surface, // Dynamic placeholder color
+                      child: Center(
+                        child: Text(
+                          'No items to display',
+                          style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic text color
+                        ),
                       ),
                     )
                   : SizedBox(
@@ -258,7 +216,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ItemDetailsPage(item: widget.items[index]),
+                                        builder: (context) => ItemDetails(
+                                          item: widget.items[index],
+                                          itemName: 'Sample Item Name',
+                                          color: 'Sample Color',
+                                          size: 'Sample Size',
+                                          season: 'Sample Season',
+                                          tags: ['Sample Tag 1', 'Sample Tag 2'],
+                                        ),
                                       ),
                                     );
                                   },
@@ -272,20 +237,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 100,
                                     height: 100,
                                     color: isSelected
-                                        ? Colors.black.withOpacity(0.5)
+                                        ? Theme.of(context).colorScheme.primary.withOpacity(0.5) // Dynamic overlay color
                                         : null,
-                                    colorBlendMode: isSelected
-                                        ? BlendMode.darken
-                                        : null,
+                                    colorBlendMode: isSelected ? BlendMode.darken : null,
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Positioned(
+                                  Positioned(
                                     top: 0,
                                     right: 0,
                                     child: Icon(
                                       Icons.check_circle,
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.onPrimary, // Dynamic icon color
                                     ),
                                   ),
                               ],
@@ -303,7 +266,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigate to the new page to view all outfits
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -320,21 +282,24 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.black, // Background color set to black
+                        color: Theme.of(context).colorScheme.primary, // Dynamic background color
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Outfits',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // Text color set to white
+                          color: Theme.of(context).colorScheme.onPrimary, // Dynamic text color
                         ),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(_isEditing ? Icons.delete : Icons.edit),
+                    icon: Icon(
+                      _isEditing ? Icons.delete : Icons.edit,
+                      color: Theme.of(context).iconTheme.color, // Dynamic icon color
+                    ),
                     onPressed: _isEditing ? _deleteSelectedItems : _toggleEditMode,
                   ),
                 ],
@@ -345,9 +310,12 @@ class _ProfilePageState extends State<ProfilePage> {
               widget.items.isEmpty
                   ? Container(
                       height: 150,
-                      color: Colors.grey[200], // Placeholder for outfits
-                      child: const Center(
-                        child: Text('No outfits to display'),
+                      color: Theme.of(context).colorScheme.surface, // Dynamic placeholder color
+                      child: Center(
+                        child: Text(
+                          'No outfits to display',
+                          style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color), // Dynamic text color
+                        ),
                       ),
                     )
                   : SizedBox(
@@ -369,11 +337,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                     });
                                   }
                                 : () {
-                                    // Navigate to the ItemDetailsPage
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ItemDetailsPage(item: widget.items[index]),
+                                        builder: (context) => ItemDetails(
+                                          item: widget.items[index],
+                                          itemName: 'Sample Item Name',
+                                          color: 'Sample Color',
+                                          size: 'Sample Size',
+                                          season: 'Sample Season',
+                                          tags: ['Sample Tag 1', 'Sample Tag 2'],
+                                        ),
                                       ),
                                     );
                                   },
@@ -387,20 +361,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                     width: 100,
                                     height: 100,
                                     color: isSelected
-                                        ? Colors.black.withOpacity(0.5)
+                                        ? Theme.of(context).colorScheme.primary.withOpacity(0.5) // Dynamic overlay color
                                         : null,
-                                    colorBlendMode: isSelected
-                                        ? BlendMode.darken
-                                        : null,
+                                    colorBlendMode: isSelected ? BlendMode.darken : null,
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Positioned(
+                                  Positioned(
                                     top: 0,
                                     right: 0,
                                     child: Icon(
                                       Icons.check_circle,
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.onPrimary, // Dynamic icon color
                                     ),
                                   ),
                               ],

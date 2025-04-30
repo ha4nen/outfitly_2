@@ -22,7 +22,8 @@ class RegisterPage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: 'Name',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
@@ -31,7 +32,8 @@ class RegisterPage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
@@ -41,7 +43,8 @@ class RegisterPage extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
-                border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
@@ -53,7 +56,7 @@ class RegisterPage extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
               ),
               child: const Text('Register'),
             ),
